@@ -19,18 +19,6 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml">
 
-    <top>
-        <VBox>
-            <HBox alignment="CENTER_LEFT" spacing="12">
-                <Label text="JavaFXPack"/>
-                <HBox HBox.hgrow="ALWAYS" />
-                <Label fx:id="jdkStatusLabel" text="JDK: checking..."/>
-                <Label fx:id="wixStatusLabel" text="WiX: checking..."/>
-            </HBox>
-            <Separator/>
-        </VBox>
-    </top>
-
     <center>
         <ScrollPane fitToWidth="true">
             <VBox spacing="18">
@@ -124,5 +112,15 @@
             </VBox>
         </ScrollPane>
     </center>
+
+    <bottom>
+        <VBox>
+            <Separator/>
+            <HBox alignment="CENTER_LEFT" spacing="12">
+                <Label fx:id="jdkStatusLabel" text="JDK: checking..."/>
+                <Label fx:id="wixStatusLabel" text="WiX: checking..."/>
+            </HBox>
+        </VBox>
+    </bottom>
 
 </BorderPane>
