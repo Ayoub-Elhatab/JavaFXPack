@@ -10,6 +10,13 @@ import lombok.ToString;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+/**
+ * Holds the settings of one packaging job
+ * (jar, app metadata, JVM options, JavaFX modules, output folder).
+ *
+ * @author Ayoub Elhatab
+ * LinkedIn: <a href="https://www.linkedin.com/in/ayoub-elhatab/">Ayoub Elhatab</a>
+ */
 @Getter
 @Setter
 @Builder
@@ -18,14 +25,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProjectConfig {
 
-    private String appName = "MyApp";
-    private String appVersion = "1.0.0";
-    private String vendor = "";
-    private String jarPath = "";
-    private String mainClass = "";
-    private String iconPath = "";
-    private String outputDir = "";
+    private String appName;
+    private String appVersion;
+    private String vendor;
+    private String jarPath;
+    private String mainClass;
+    private String iconPath;
+    private String outputDir;
     private List<String> jvmOptions = new ArrayList<>();
     private List<String> javafxModules = new ArrayList<>();
-    private String javafxJmodsPath = "";
+    private String javafxJmodsPath;
 }

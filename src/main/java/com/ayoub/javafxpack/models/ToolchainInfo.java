@@ -8,6 +8,13 @@ import lombok.ToString;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+/**
+ * Holds the detected paths and availability of the external build tools
+ * (JDK, jpackage, jlink, WiX).
+ *
+ * @author Ayoub Elhatab
+ * LinkedIn: <a href="https://www.linkedin.com/in/ayoub-elhatab/">Ayoub Elhatab</a>
+ */
 @Getter
 @Setter
 @Builder
