@@ -1,7 +1,10 @@
 package com.ayoub.javafxpack.ui;
 
 
+import com.ayoub.javafxpack.models.ToolchainInfo;
 import com.ayoub.javafxpack.services.JavaFxModuleDetector;
+import com.ayoub.javafxpack.services.ToolsLocatorService;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
@@ -38,12 +41,15 @@ public class MainController {
     @FXML private TextArea buildLogArea;
 
     private final JavaFxModuleDetector javaFxModuleDetector = new JavaFxModuleDetector();
+    private final ToolsLocatorService toolsLocatorService = new ToolsLocatorService();
 
     private final Map<String, CheckBox> moduleCheckBoxes = new LinkedHashMap<>();
+    private ToolchainInfo toolchainInfo;
 
     @FXML
     public void initialize(){
         buildModuleCheckboxes();
+        locateToolsAsync();
     }
 
     /**
@@ -60,6 +66,39 @@ public class MainController {
             moduleCheckBoxes.put(module, cb);
             modulesFlowPane.getChildren().add(cb);
         }
+    }
+
+    /**
+     * Detects the JDK and WiX on a background thread,
+     * then applies the result on the JavaFX thread.
+     */
+    private void locateToolsAsync(){
+        Thread thread = new Thread(() -> {
+            ToolchainInfo info = toolsLocatorService.detect();
+            Platform.runLater(() -> applyToolchainInfo(info));
+        });
+        thread.setDaemon(true);
+        thread.start();
+    }
+
+    /**
+     * Stores the detection result, updates the JDK/WiX status labels and
+     * enables the Build button only when both tools are found.
+     *
+     * @param info the detected toolchain
+     */
+    private void applyToolchainInfo(ToolchainInfo info) {
+        this.toolchainInfo = info;
+
+        jdkStatusLabel.setText(info.isJdkFound() ? "JDK: " + info.getJdkVersion() : "JDK: not found");
+        jdkStatusLabel.getStyleClass().removeAll("ok", "error");
+        jdkStatusLabel.getStyleClass().add(info.isJdkFound() ? "ok" : "error");
+
+        wixStatusLabel.setText(info.isWixFound() ? "WiX: " + info.getWixVersion() : "WiX: not found");
+        wixStatusLabel.getStyleClass().removeAll("ok", "error");
+        wixStatusLabel.getStyleClass().add(info.isWixFound() ? "ok" : "error");
+
+        buildButton.setDisable(!info.isJdkFound() || !info.isWixFound());
     }
 
     /**

@@ -31,6 +31,7 @@ public class ToolchainInfo {
     private String wixBinPath;
 
     private String jdkVersion;
+    private String wixVersion;
 
     private boolean jdkFound;
     private boolean wixFound;
