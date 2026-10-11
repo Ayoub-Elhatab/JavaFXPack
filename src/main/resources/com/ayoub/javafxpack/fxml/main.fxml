@@ -17,7 +17,8 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml">
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.ayoub.javafxpack.ui.MainController">
 
     <center>
         <ScrollPane fitToWidth="true">
@@ -45,7 +46,7 @@
 
                         <Label text="Jar file" GridPane.rowIndex="3" GridPane.columnIndex="0" />
                         <TextField fx:id="jarPathField" promptText="C:\path\to\app.jar" GridPane.rowIndex="3" GridPane.columnIndex="1" />
-                        <Button text="Browse..." GridPane.rowIndex="3" GridPane.columnIndex="2" />
+                        <Button text="Browse..." onAction="#onBrowseJar" GridPane.rowIndex="3" GridPane.columnIndex="2" />
 
                         <Label text="Main class" GridPane.rowIndex="4" GridPane.columnIndex="0" />
                         <TextField fx:id="mainClassField" promptText="com.ayoub.myapp.Main" GridPane.rowIndex="4" GridPane.columnIndex="1" GridPane.columnSpan="2" />
@@ -83,7 +84,7 @@
                     </HBox>
 
                     <HBox spacing="10" alignment="CENTER_LEFT">
-                        <Button text="Detect modules from jar"/>
+                        <Button text="Detect modules from jar" onAction="#onDetectModules"/>
                         <Label fx:id="moduleDetectionLabel" />
                     </HBox>
 
