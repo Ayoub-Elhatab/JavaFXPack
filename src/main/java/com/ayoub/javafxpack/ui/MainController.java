@@ -1,9 +1,12 @@
 package com.ayoub.javafxpack.ui;
 
 
+import com.ayoub.javafxpack.models.ProjectConfig;
 import com.ayoub.javafxpack.models.ToolchainInfo;
+import com.ayoub.javafxpack.models.ValidationResult;
 import com.ayoub.javafxpack.services.JavaFxModuleDetector;
 import com.ayoub.javafxpack.services.ToolsLocatorService;
+import com.ayoub.javafxpack.services.ValidationService;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -11,9 +14,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import java.io.File;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MainController {
 
@@ -43,6 +44,7 @@ public class MainController {
 
     private final JavaFxModuleDetector javaFxModuleDetector = new JavaFxModuleDetector();
     private final ToolsLocatorService toolsLocatorService = new ToolsLocatorService();
+    private final ValidationService validationService = new ValidationService();
 
     private final Map<String, CheckBox> moduleCheckBoxes = new LinkedHashMap<>();
     private ToolchainInfo toolchainInfo;
@@ -170,6 +172,69 @@ public class MainController {
         if (file != null) {
             jmodsPathField.setText(file.getAbsolutePath());
         }
+    }
+
+    @FXML
+    private void onBuild() {
+        ProjectConfig config = collectConfig();
+
+        ValidationResult validation = validationService.validate(config, toolchainInfo);
+
+        if (!validation.isValid()) {
+            showAlert(Alert.AlertType.ERROR, "Cannot build", String.join("\n", validation.getErrors()));
+            return;
+        }
+    }
+
+    /**
+     * Reads the form fields and ticked module checkboxes into a new ProjectConfig.
+     * JVM options are split on whitespace.
+     *
+     * @return the project configuration built from the current form state
+     */
+    private ProjectConfig collectConfig() {
+        ProjectConfig config = new ProjectConfig();
+
+        config.setAppName(appNameField.getText());
+        config.setAppVersion(appVersionField.getText());
+        config.setVendor(vendorField.getText());
+        config.setJarPath(jarPathField.getText());
+        config.setMainClass(mainClassField.getText());
+        config.setIconPath(iconPathField.getText());
+        config.setOutputDir(outputDirField.getText());
+        config.setJavafxJmodsPath(jmodsPathField.getText());
+
+        List<String> jvmOptions = new ArrayList<>();
+        String rawOptions = jvmOptionsField.getText();
+        if(rawOptions != null && !rawOptions.isBlank()){
+            jvmOptions.addAll(Arrays.asList(rawOptions.trim().split("\\s+")));
+        }
+        config.setJvmOptions(jvmOptions);
+
+        List<String> modules = new ArrayList<>();
+        moduleCheckBoxes.forEach((module, cb) -> {
+            if(cb.isSelected()){
+                modules.add(module);
+            }
+        });
+        config.setJavafxModules(modules);
+
+        return config;
+    }
+
+    /**
+     * Shows a modal alert dialog .
+     *
+     * @param type the alert type (error, warning, information)
+     * @param title the dialog title
+     * @param message the text shown in the dialog body
+     */
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 

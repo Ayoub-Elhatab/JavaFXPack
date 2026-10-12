@@ -17,7 +17,6 @@ import java.util.function.Consumer;
  */
 public class ProcessRunner {
 
-
     /**
      * Runs the given command and blocks until it exits.
      *

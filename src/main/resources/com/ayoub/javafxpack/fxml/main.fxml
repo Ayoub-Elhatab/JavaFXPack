@@ -94,7 +94,7 @@
 
                 <!-- Actions -->
                 <HBox spacing="12" alignment="CENTER_LEFT">
-                    <Button fx:id="buildButton" text="Build .exe"/>
+                    <Button fx:id="buildButton" text="Build .exe" onAction="#onBuild"/>
                     <Button text="Save project"/>
                     <Button text="Load project"/>
                     <ProgressBar fx:id="buildProgressBar" progress="0" visible="false" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
