@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import java.io.File;
 import java.util.LinkedHashMap;
@@ -130,6 +131,47 @@ public class MainController {
         moduleCheckBoxes.forEach((module, cb) -> cb.setSelected(suggested.contains(module)));
         moduleDetectionLabel.setText("found : " + String.join(", ", suggested));
     }
+
+    /**
+     * Opens a file chooser filtered to .ico files and puts the selected path in the icon field.
+     */
+    @FXML
+    private void onBrowseIcon(){
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Select main Icon");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Icon files", "*.ico"));
+        File file = fileChooser.showOpenDialog(buildButton.getScene().getWindow());
+        if (file != null) {
+            iconPathField.setText(file.getAbsolutePath());
+        }
+    }
+
+    /**
+     * Opens a folder chooser and puts the selected path in the output folder field.
+     */
+    @FXML
+    private void onBrowseOutputDir() {
+        DirectoryChooser dirChooser = new DirectoryChooser();
+        dirChooser.setTitle("Select output folder");
+        File file = dirChooser.showDialog(buildButton.getScene().getWindow());
+        if (file != null) {
+            outputDirField.setText(file.getAbsolutePath());
+        }
+    }
+
+    /**
+     * Opens a folder chooser and puts the selected javafx-jmods path in the jmods field.
+     */
+    @FXML
+    private void onBrowseJmods() {
+        DirectoryChooser dirChooser = new DirectoryChooser();
+        dirChooser.setTitle("Select javafx-jmods folder");
+        File file = dirChooser.showDialog(buildButton.getScene().getWindow());
+        if (file != null) {
+            jmodsPathField.setText(file.getAbsolutePath());
+        }
+    }
+
 
 
 
