@@ -1,12 +1,12 @@
 package com.ayoub.javafxpack.ui;
 
 
+import com.ayoub.javafxpack.models.BuildResult;
 import com.ayoub.javafxpack.models.ProjectConfig;
 import com.ayoub.javafxpack.models.ToolchainInfo;
 import com.ayoub.javafxpack.models.ValidationResult;
-import com.ayoub.javafxpack.services.JavaFxModuleDetector;
-import com.ayoub.javafxpack.services.ToolsLocatorService;
-import com.ayoub.javafxpack.services.ValidationService;
+import com.ayoub.javafxpack.process.BuildTask;
+import com.ayoub.javafxpack.services.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -45,9 +45,12 @@ public class MainController {
     private final JavaFxModuleDetector javaFxModuleDetector = new JavaFxModuleDetector();
     private final ToolsLocatorService toolsLocatorService = new ToolsLocatorService();
     private final ValidationService validationService = new ValidationService();
+    private final JlinkService jlinkService = new JlinkService();
+    private final JpackageService jpackageService = new JpackageService();
 
     private final Map<String, CheckBox> moduleCheckBoxes = new LinkedHashMap<>();
     private ToolchainInfo toolchainInfo;
+    private String lastOutputPath;
 
     @FXML
     public void initialize(){
@@ -174,6 +177,10 @@ public class MainController {
         }
     }
 
+    /**
+     * Validates the form, then runs the build on a background thread
+     * while showing progress and live output.
+     */
     @FXML
     private void onBuild() {
         ProjectConfig config = collectConfig();
@@ -190,6 +197,22 @@ public class MainController {
         buildProgressBar.setVisible(true);
         buildProgressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
 
+        BuildTask task = new BuildTask(config, toolchainInfo, jlinkService, jpackageService, this::appendLog);
+
+        task.setOnSucceeded(e -> {
+            BuildResult result = task.getValue();
+            onBuildFinished(result, config);
+        });
+
+        task.setOnFailed(e -> {
+            appendLog("Build failed: " + task.getException());
+            buildButton.setDisable(false);
+            buildProgressBar.setVisible(false);
+        });
+
+        Thread thread = new Thread(task);
+        thread.setDaemon(true);
+        thread.start();
     }
 
     /**
@@ -226,6 +249,39 @@ public class MainController {
         config.setJavafxModules(modules);
 
         return config;
+    }
+
+    /**
+     * Restores the UI after a build and reports success or failure to the user.
+     *
+     * @param result the outcome returned by jpackage
+     * @param config the project settings used for the build
+     */
+    private void onBuildFinished(BuildResult result, ProjectConfig config) {
+        buildButton.setDisable(false);
+        buildProgressBar.setVisible(false);
+
+        if (result.isSuccess()) {
+            lastOutputPath = result.getOutputExePath();
+            appendLog("Build succeeded: " + result.getOutputExePath());
+            showAlert(Alert.AlertType.INFORMATION, "Build succeeded",
+                    "Your exe was created at:\n" + result.getOutputExePath());
+        } else{
+            lastOutputPath = config.getOutputDir();
+            appendLog("Build failed with exit code " + result.getExitCode());
+            showAlert(Alert.AlertType.ERROR, "Build failed",
+                    "jpackage exited with code " + result.getExitCode() + ". See the log for details.");
+        }
+    }
+
+    /**
+     * Appends a line to the build log.
+     *
+     * @param line the text to append, ignored if null
+     */
+    private void appendLog(String line) {
+        if (line == null) return;
+        buildLogArea.appendText(line + System.lineSeparator());
     }
 
     /**
