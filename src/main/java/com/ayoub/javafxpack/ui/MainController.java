@@ -184,6 +184,12 @@ public class MainController {
             showAlert(Alert.AlertType.ERROR, "Cannot build", String.join("\n", validation.getErrors()));
             return;
         }
+
+        buildLogArea.clear();
+        buildButton.setDisable(true);
+        buildProgressBar.setVisible(true);
+        buildProgressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
+
     }
 
     /**
