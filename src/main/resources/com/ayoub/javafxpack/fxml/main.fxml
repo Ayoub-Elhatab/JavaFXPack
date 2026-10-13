@@ -95,8 +95,6 @@
                 <!-- Actions -->
                 <HBox spacing="12" alignment="CENTER_LEFT">
                     <Button fx:id="buildButton" text="Build .exe" onAction="#onBuild"/>
-                    <Button text="Save project"/>
-                    <Button text="Load project"/>
                     <ProgressBar fx:id="buildProgressBar" progress="0" visible="false" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
                 </HBox>
 
@@ -105,7 +103,7 @@
                     <HBox alignment="CENTER_LEFT" spacing="10">
                         <Label text="Build Log" />
                         <HBox HBox.hgrow="ALWAYS" />
-                        <Button text="Open output folder"/>
+                        <Button text="Open output folder" onAction="#onOpenOutputFolder"/>
                     </HBox>
                     <TextArea fx:id="buildLogArea" editable="false" wrapText="true" prefHeight="220"/>
                 </VBox>

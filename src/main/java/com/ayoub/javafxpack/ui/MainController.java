@@ -10,11 +10,18 @@ import com.ayoub.javafxpack.services.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 public class MainController {
 
@@ -299,14 +306,23 @@ public class MainController {
         alert.showAndWait();
     }
 
+    /**
+     * Opens the output folder in Windows Explorer, using the last build's output path
+     * or the output folder field if no build has run yet.
+     */
+    @FXML
+    private void onOpenOutputFolder() {
+        String path = lastOutputPath != null ? lastOutputPath : outputDirField.getText();
+        if (path == null || path.isBlank()) return;
 
-
-
-
-
-
-
-
-
+        try{
+            File file = new File(path);
+            File dir = file.isDirectory() ? file : file.getParentFile();
+            if(dir != null && dir.exists() && Desktop.isDesktopSupported()){
+                Desktop.getDesktop().open(dir);
+            }
+        } catch (IOException ignored) {
+        }
+    }
 
 }
