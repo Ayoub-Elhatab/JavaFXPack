@@ -30,7 +30,7 @@
     -fx-font-size: 13px;
 }
 
-.hint-label {
+.hint-label, .check-box {
     -fx-text-fill: #8A949B;
     -fx-font-size: 13px;
 }
@@ -76,6 +76,58 @@
 .log-area {
     -fx-font-family: "Consolas", monospace;
     -fx-font-size: 13px;
+}
+
+/* progress bar */
+.progress-bar > .track {
+    -fx-background-color: #E3DDD3;
+    -fx-background-radius: 6;
+    -fx-background-insets: 0;
+}
+.progress-bar > .bar {
+    -fx-background-color: #1F7A78;
+    -fx-background-radius: 6;
+    -fx-background-insets: 0;
+    -fx-padding: 4;
+}
+
+/* scroll bar*/
+.scroll-bar {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+.scroll-bar:vertical {
+    -fx-pref-width: 12;
+}
+.scroll-bar > .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.scroll-bar > .thumb {
+    -fx-background-color: #cfc9bd;
+    -fx-background-radius: 8;
+    -fx-background-insets: 2;
+}
+.scroll-bar > .thumb:hover {
+    -fx-background-color: #b3ac9d;
+}
+.scroll-bar > .thumb:pressed {
+    -fx-background-color: #968f80;
+}
+
+.scroll-bar > .increment-button,
+.scroll-bar > .decrement-button {
+    -fx-padding: 0;
+    -fx-background-color: transparent;
+}
+.scroll-bar > .increment-button > .increment-arrow,
+.scroll-bar > .decrement-button > .decrement-arrow {
+    -fx-padding: 0;
+    -fx-shape: " ";
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: transparent;
 }
 
 /* footer */

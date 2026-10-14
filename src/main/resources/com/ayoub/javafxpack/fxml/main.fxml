@@ -23,7 +23,7 @@
 
     <center>
         <ScrollPane fitToWidth="true" styleClass="content-scroll">
-            <VBox spacing="18">
+            <VBox spacing="14">
                 <padding><Insets top="20" right="24" bottom="20" left="24" /></padding>
 
                 <!-- Project section -->
@@ -104,7 +104,7 @@
                     <HBox alignment="CENTER_LEFT" spacing="10">
                         <Label text="Build Log" styleClass="section-title"/>
                         <HBox HBox.hgrow="ALWAYS" />
-                        <Button text="Open output folder" onAction="#onOpenOutputFolder"/>
+                        <Button fx:id="openOutputFolderButton" text="Open output folder" onAction="#onOpenOutputFolder"/>
                     </HBox>
                     <TextArea fx:id="buildLogArea" editable="false" wrapText="true" prefHeight="220"  styleClass="log-area"/>
                 </VBox>
@@ -116,7 +116,7 @@
     <bottom>
         <VBox styleClass="footer">
             <Separator/>
-            <HBox alignment="CENTER_LEFT" spacing="12">
+            <HBox alignment="CENTER" spacing="15">
                 <Label fx:id="jdkStatusLabel" text="JDK: checking..."  styleClass="status-chip"/>
                 <Label fx:id="wixStatusLabel" text="WiX: checking..."  styleClass="status-chip"/>
             </HBox>

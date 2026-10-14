@@ -44,6 +44,7 @@ public class MainController {
     @FXML private FlowPane modulesFlowPane;
 
     @FXML private Button buildButton;
+    @FXML private Button openOutputFolderButton;
 
     @FXML private ProgressBar buildProgressBar;
 
@@ -63,6 +64,7 @@ public class MainController {
     public void initialize(){
         buildModuleCheckboxes();
         locateToolsAsync();
+        openOutputFolderButton.setDisable(true);
     }
 
     /**
@@ -209,6 +211,7 @@ public class MainController {
         task.setOnSucceeded(e -> {
             BuildResult result = task.getValue();
             onBuildFinished(result, config);
+            openOutputFolderButton.setDisable(false);
         });
 
         task.setOnFailed(e -> {
