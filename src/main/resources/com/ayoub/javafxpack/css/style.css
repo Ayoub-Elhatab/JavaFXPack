@@ -1,0 +1,98 @@
+.root-pane {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-background-color: #F3F0EA;
+}
+
+.content-scroll,
+.content-scroll > .viewport,
+.content-box {
+    -fx-background-color: transparent;
+}
+.content-scroll {
+    -fx-padding: 0;
+}
+
+.section-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-border-color: #E3DDD3;
+    -fx-border-radius: 10;
+    -fx-padding: 16;
+}
+.section-title {
+    -fx-text-fill: #1E2A32;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+.input-label {
+    -fx-text-fill: #1E2A32;
+    -fx-font-size: 13px;
+}
+
+.hint-label {
+    -fx-text-fill: #8A949B;
+    -fx-font-size: 13px;
+}
+
+.button {
+    -fx-background-color:#DCEDEA;
+    -fx-text-fill: #176462;
+    -fx-background-radius: 6;
+    -fx-padding: 7 14 7 14;
+    -fx-cursor: hand;
+}
+.button:hover {
+    -fx-background-color: #CBE4E0;
+}
+
+/* build button */
+.primary-button {
+    -fx-background-color: #1F7A78;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+.primary-button:hover {
+    -fx-background-color: #186361;
+}
+.primary-button:disabled {
+    -fx-background-color: #2f3a5c;
+    -fx-opacity: 0.7;
+}
+
+/* inputs - log area */
+.text-field, .text-area {
+    -fx-background-color: #FAF8F4;
+    -fx-text-fill: #1E2A32;
+    -fx-prompt-text-fill: #A3ABB1;
+    -fx-background-radius: 6;
+    -fx-border-color: #DDD6CA;
+    -fx-border-radius: 6;
+}
+.text-field:focused{
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #1F7A78;
+}
+.log-area {
+    -fx-font-family: "Consolas", monospace;
+    -fx-font-size: 13px;
+}
+
+/* footer */
+.footer{
+    -fx-background-color: #E9E4DA;
+}
+
+/* JDK/WIX status labels*/
+.status-chip {
+    -fx-text-fill: #6F7A82;
+    -fx-padding: 4 10 4 10;
+    -fx-background-radius: 12;
+    -fx-font-size: 13px;
+}
+.status-chip.ok {
+    -fx-text-fill: #1F7A78;
+}
+.status-chip.error {
+    -fx-text-fill: #e2777f;
+}

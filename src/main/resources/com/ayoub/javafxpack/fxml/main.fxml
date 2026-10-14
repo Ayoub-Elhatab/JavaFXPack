@@ -18,16 +18,17 @@
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.ayoub.javafxpack.ui.MainController">
+            fx:controller="com.ayoub.javafxpack.ui.MainController"
+            styleClass="root-pane">
 
     <center>
-        <ScrollPane fitToWidth="true">
+        <ScrollPane fitToWidth="true" styleClass="content-scroll">
             <VBox spacing="18">
                 <padding><Insets top="20" right="24" bottom="20" left="24" /></padding>
 
                 <!-- Project section -->
-                <VBox spacing="10">
-                    <Label text="Project"/>
+                <VBox spacing="10" styleClass="section-card">
+                    <Label text="Project" styleClass="section-title"/>
                     <GridPane hgap="10" vgap="10">
                         <columnConstraints>
                             <ColumnConstraints minWidth="140" />
@@ -35,27 +36,27 @@
                             <ColumnConstraints minWidth="90" />
                         </columnConstraints>
 
-                        <Label text="App name" GridPane.rowIndex="0" GridPane.columnIndex="0" />
-                        <TextField fx:id="appNameField" promptText="MyApp" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+                        <Label text="App name" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="input-label"/>
+                        <TextField fx:id="appNameField" promptText="MyApp" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="1" />
 
-                        <Label text="Version" GridPane.rowIndex="1" GridPane.columnIndex="0" />
-                        <TextField fx:id="appVersionField" promptText="1.0.0" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+                        <Label text="Version" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="input-label" />
+                        <TextField fx:id="appVersionField" promptText="1.0.0" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1" />
 
-                        <Label text="Vendor" GridPane.rowIndex="2" GridPane.columnIndex="0" />
-                        <TextField fx:id="vendorField" promptText="Optional" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+                        <Label text="Vendor" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="input-label" />
+                        <TextField fx:id="vendorField" promptText="Optional" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="1" />
 
-                        <Label text="Jar file" GridPane.rowIndex="3" GridPane.columnIndex="0" />
+                        <Label text="Jar file" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="input-label" />
                         <TextField fx:id="jarPathField" promptText="C:\path\to\app.jar" GridPane.rowIndex="3" GridPane.columnIndex="1" />
                         <Button text="Browse..." onAction="#onBrowseJar" GridPane.rowIndex="3" GridPane.columnIndex="2" />
 
-                        <Label text="Main class" GridPane.rowIndex="4" GridPane.columnIndex="0" />
-                        <TextField fx:id="mainClassField" promptText="com.ayoub.myapp.Main" GridPane.rowIndex="4" GridPane.columnIndex="1" GridPane.columnSpan="2" />
+                        <Label text="Main class" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="input-label" />
+                        <TextField fx:id="mainClassField" promptText="com.ayoub.myapp.Main" GridPane.rowIndex="4" GridPane.columnIndex="1" GridPane.columnSpan="1" />
 
-                        <Label text="Icon (.ico)" GridPane.rowIndex="5" GridPane.columnIndex="0" />
+                        <Label text="Icon (.ico)" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="input-label" />
                         <TextField fx:id="iconPathField" promptText="Optional" GridPane.rowIndex="5" GridPane.columnIndex="1" />
                         <Button text="Browse..." onAction="#onBrowseIcon" GridPane.rowIndex="5" GridPane.columnIndex="2" />
 
-                        <Label text="Output folder" GridPane.rowIndex="6" GridPane.columnIndex="0" />
+                        <Label text="Output folder" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="input-label" />
                         <TextField fx:id="outputDirField" promptText="C:\path\to\output" GridPane.rowIndex="6" GridPane.columnIndex="1" />
                         <Button text="Browse..." onAction="#onBrowseOutputDir" GridPane.rowIndex="6" GridPane.columnIndex="2" />
 
@@ -67,45 +68,45 @@
                 </VBox>
 
                 <!-- JVM options -->
-                <VBox spacing="10">
-                    <Label text="JVM Options"/>
+                <VBox spacing="10" styleClass="section-card">
+                    <Label text="JVM Options" styleClass="section-title"/>
                     <TextField fx:id="jvmOptionsField" promptText="-Xmx512m -Dfile.encoding=UTF-8 (space separated)" />
                 </VBox>
 
                 <!-- Runtime / modules -->
-                <VBox spacing="10">
-                    <Label text="Runtime"/>
-                    <Label text="jlink bundles a private Java runtime into every build — no Java install required on the target machine." wrapText="true" />
+                <VBox spacing="10" styleClass="section-card">
+                    <Label text="Runtime" styleClass="section-title"/>
+                    <Label text="jlink bundles a private Java runtime into every build — no Java install required on the target machine." wrapText="true" styleClass="hint-label" />
 
                     <HBox spacing="10" alignment="CENTER_LEFT">
-                        <Label text="javafx-jmods folder" minWidth="140" />
+                        <Label text="javafx-jmods folder" minWidth="140" styleClass="input-label" />
                         <TextField fx:id="jmodsPathField" promptText="C:\javafx-jmods-21" HBox.hgrow="ALWAYS" />
                         <Button text="Browse..." onAction="#onBrowseJmods" />
                     </HBox>
 
                     <HBox spacing="10" alignment="CENTER_LEFT">
                         <Button text="Detect modules from jar" onAction="#onDetectModules"/>
-                        <Label fx:id="moduleDetectionLabel" />
+                        <Label fx:id="moduleDetectionLabel" styleClass="hint-label"/>
                     </HBox>
 
-                    <Label text="JavaFX modules to include:" />
+                    <Label text="JavaFX modules to include :" styleClass="input-label" />
                     <FlowPane fx:id="modulesFlowPane" hgap="14" vgap="8" />
                 </VBox>
 
                 <!-- Actions -->
                 <HBox spacing="12" alignment="CENTER_LEFT">
-                    <Button fx:id="buildButton" text="Build .exe" onAction="#onBuild"/>
+                    <Button fx:id="buildButton" text="Build .exe" onAction="#onBuild" styleClass="primary-button"/>
                     <ProgressBar fx:id="buildProgressBar" progress="0" visible="false" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
                 </HBox>
 
                 <!-- Log -->
-                <VBox spacing="10">
+                <VBox spacing="10" styleClass="section-card">
                     <HBox alignment="CENTER_LEFT" spacing="10">
-                        <Label text="Build Log" />
+                        <Label text="Build Log" styleClass="section-title"/>
                         <HBox HBox.hgrow="ALWAYS" />
                         <Button text="Open output folder" onAction="#onOpenOutputFolder"/>
                     </HBox>
-                    <TextArea fx:id="buildLogArea" editable="false" wrapText="true" prefHeight="220"/>
+                    <TextArea fx:id="buildLogArea" editable="false" wrapText="true" prefHeight="220"  styleClass="log-area"/>
                 </VBox>
 
             </VBox>
@@ -113,11 +114,11 @@
     </center>
 
     <bottom>
-        <VBox>
+        <VBox styleClass="footer">
             <Separator/>
             <HBox alignment="CENTER_LEFT" spacing="12">
-                <Label fx:id="jdkStatusLabel" text="JDK: checking..."/>
-                <Label fx:id="wixStatusLabel" text="WiX: checking..."/>
+                <Label fx:id="jdkStatusLabel" text="JDK: checking..."  styleClass="status-chip"/>
+                <Label fx:id="wixStatusLabel" text="WiX: checking..."  styleClass="status-chip"/>
             </HBox>
         </VBox>
     </bottom>

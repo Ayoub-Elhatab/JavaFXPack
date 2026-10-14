@@ -7,6 +7,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Main extends Application {
 
@@ -16,6 +17,8 @@ public class Main extends Application {
         Parent root = loader.load();
 
         Scene scene = new Scene(root, 960, 910);
+        scene.getStylesheets().add(
+                Objects.requireNonNull(getClass().getResource("/com/ayoub/javafxpack/css/style.css")).toExternalForm());
 
         stage.setTitle("JavaFXPack");
         stage.setScene(scene);

@@ -103,11 +103,11 @@ public class MainController {
     private void applyToolchainInfo(ToolchainInfo info) {
         this.toolchainInfo = info;
 
-        jdkStatusLabel.setText(info.isJdkFound() ? "JDK: " + info.getJdkVersion() : "JDK: not found");
+        jdkStatusLabel.setText(info.isJdkFound() ? "JDK : " + info.getJdkVersion() : "JDK : not found");
         jdkStatusLabel.getStyleClass().removeAll("ok", "error");
         jdkStatusLabel.getStyleClass().add(info.isJdkFound() ? "ok" : "error");
 
-        wixStatusLabel.setText(info.isWixFound() ? "WiX: " + info.getWixVersion() : "WiX: not found");
+        wixStatusLabel.setText(info.isWixFound() ? "WiX : " + info.getWixVersion() : "WiX : not found");
         wixStatusLabel.getStyleClass().removeAll("ok", "error");
         wixStatusLabel.getStyleClass().add(info.isWixFound() ? "ok" : "error");
 
