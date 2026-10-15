@@ -36,24 +36,24 @@
 }
 
 .button {
-    -fx-background-color:#DCEDEA;
-    -fx-text-fill: #176462;
+    -fx-background-color:rgba(240, 160, 32, 0.15);
+    -fx-text-fill: #8A5A00;
     -fx-background-radius: 6;
     -fx-padding: 7 14 7 14;
     -fx-cursor: hand;
 }
 .button:hover {
-    -fx-background-color: #CBE4E0;
+    -fx-background-color: rgba(240, 160, 32, 0.28);
 }
 
 /* build button */
 .primary-button {
-    -fx-background-color: #1F7A78;
+    -fx-background-color: #f0a020;
     -fx-font-weight: bold;
     -fx-text-fill: #FFFFFF;
 }
 .primary-button:hover {
-    -fx-background-color: #186361;
+    -fx-background-color: #D98F12;
 }
 .primary-button:disabled {
     -fx-background-color: #2f3a5c;
@@ -71,7 +71,7 @@
 }
 .text-field:focused{
     -fx-background-color: #FFFFFF;
-    -fx-border-color: #1F7A78;
+    -fx-border-color: #f0a020;
 }
 .log-area {
     -fx-font-family: "Consolas", monospace;
@@ -148,3 +148,30 @@
 .status-chip.error {
     -fx-text-fill: #e2777f;
 }
+
+/* alerts */
+.dialog-pane {
+    -fx-background-color: #fff8ec;
+    -fx-border-width: 2 0 0 0;
+    -fx-font-size: 13px;
+}
+.dialog-pane:no-header .graphic-container {
+    -fx-padding: 18 0 14 20;
+}
+.dialog-pane > .content.label {
+    -fx-text-fill: #4a3410;
+    -fx-padding: 18 20 14 12;
+}
+.dialog-pane > .button-bar > .container {
+    -fx-background-color: transparent;
+    -fx-padding: 0 14 14 14;
+}
+.dialog-pane .button {
+    -fx-background-color: #f0a020;
+    -fx-background-radius: 6;
+    -fx-text-fill: white;
+    -fx-padding: 6 18 6 18;
+    -fx-cursor: hand;
+}
+
+

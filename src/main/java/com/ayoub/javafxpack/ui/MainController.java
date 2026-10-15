@@ -14,12 +14,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.List;
 
@@ -197,7 +201,7 @@ public class MainController {
         ValidationResult validation = validationService.validate(config, toolchainInfo);
 
         if (!validation.isValid()) {
-            showAlert(Alert.AlertType.ERROR, "Cannot build", String.join("\n", validation.getErrors()));
+            showAlert(Alert.AlertType.WARNING, "Cannot build", String.join("\n", validation.getErrors()));
             return;
         }
 
@@ -295,7 +299,7 @@ public class MainController {
     }
 
     /**
-     * Shows a modal alert dialog .
+     * Shows a modal alert styled and iconified according to its type.
      *
      * @param type the alert type (error, warning, information)
      * @param title the dialog title
@@ -306,6 +310,25 @@ public class MainController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+
+        alert.initOwner(buildButton.getScene().getWindow());
+
+        Stage alertStage = (Stage) alert.getDialogPane().getScene().getWindow();
+        alertStage.getIcons().add(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/ayoub/javafxpack/icons/exe.png"))));
+
+        String typeName = type.name().toLowerCase();
+
+        DialogPane pane = alert.getDialogPane();
+        pane.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/com/ayoub/javafxpack/css/style.css")).toExternalForm());
+
+        InputStream iconStream = getClass().getResourceAsStream("/com/ayoub/javafxpack/icons/alert-" + typeName + ".png");
+        if (iconStream != null) {
+            ImageView icon = new ImageView(new Image(iconStream));
+            icon.setFitWidth(40);
+            icon.setFitHeight(40);
+            alert.setGraphic(icon);
+        }
+
         alert.showAndWait();
     }
 
