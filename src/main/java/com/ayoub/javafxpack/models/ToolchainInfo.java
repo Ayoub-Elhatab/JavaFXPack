@@ -26,6 +26,7 @@ public class ToolchainInfo {
     private String javaHome;
     private String jpackagePath;
     private String jlinkPath;
+    private String jdepsPath;
 
     // e.g. "candle.exe"/"light.exe" directory, needed for --type exe
     private String wixBinPath;
