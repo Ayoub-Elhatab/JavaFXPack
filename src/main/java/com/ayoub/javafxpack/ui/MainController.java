@@ -153,7 +153,7 @@ public class MainController {
     }
 
     /**
-     * Scans the selected jar for JavaFX usage and ticks the matching module checkboxes.
+     * Scans the selected jar and its dependency jars for JavaFX usage and ticks the matching module checkboxes.
      * Shows an error message in the label if no valid jar is selected.
      */
     @FXML
@@ -163,7 +163,7 @@ public class MainController {
             moduleDetectionLabel.setText("Select a valid jar first.");
             return;
         }
-        Set<String> suggested = javaFxModuleDetector.suggestModules(jarPath);
+        Set<String> suggested = javaFxModuleDetector.suggestModules(jarPath, libsDirField.getText());
         moduleCheckBoxes.forEach((module, cb) -> cb.setSelected(suggested.contains(module)));
         moduleDetectionLabel.setText("found : " + String.join(", ", suggested));
     }

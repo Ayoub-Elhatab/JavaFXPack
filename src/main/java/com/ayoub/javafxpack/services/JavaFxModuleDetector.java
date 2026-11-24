@@ -1,9 +1,11 @@
 package com.ayoub.javafxpack.services;
 
 
+import com.ayoub.javafxpack.utils.JarUtils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -33,17 +35,50 @@ public class JavaFxModuleDetector {
     }
 
     /**
-     * Scans the class entries of a jar for JavaFX packages and maps them to module names.
+     * Scans the main jar and the dependency jars for JavaFX packages and maps them
+     * to module names. JavaFX jars themselves are not scanned.
      * Falls back to javafx.controls and javafx.fxml
-     * when nothing is found or the jar can't be read.
+     * when nothing is found or no jar can be read.
      *
-     * @param jarPath absolute path to the jar to scan
+     * @param jarPath absolute path to the main jar
+     * @param libsDir folder with the dependency jars, or null/blank for none
      * @return the suggested JavaFX module names
      */
-    public Set<String> suggestModules(String jarPath){
+    public Set<String> suggestModules(String jarPath, String libsDir){
         Set<String> found = new LinkedHashSet<>();
 
-        try (JarFile jarFile = new JarFile(jarPath)) {
+        List<Path> jars = new ArrayList<>();
+        jars.add(Path.of(jarPath));
+        if (libsDir != null && !libsDir.isBlank()) {
+            try {
+                for (Path lib : JarUtils.listJars(Path.of(libsDir))) {
+                    if (!JarUtils.isJavaFxJar(lib)) jars.add(lib);
+                }
+            } catch (IOException e) {
+                // unreadable folder: only the main jar is scanned
+            }
+        }
+
+        for (Path jar : jars) {
+            scanJar(jar, found);
+        }
+
+        if (found.isEmpty()) {
+            found.add("javafx.controls");
+            found.add("javafx.fxml");
+        }
+
+        return found;
+    }
+
+    /**
+     * Adds the JavaFX modules used by one jar's classes and FXML files.
+     *
+     * @param jar the jar to scan
+     * @param found the set the module names are added to
+     */
+    private void scanJar(Path jar, Set<String> found) {
+        try (JarFile jarFile = new JarFile(jar.toFile())) {
             var entries = jarFile.entries();
             while (entries.hasMoreElements()) {
                 JarEntry entry = entries.nextElement();
@@ -58,15 +93,8 @@ public class JavaFxModuleDetector {
                 }
             }
         }catch (IOException e) {
-            // unreadable jar: the fallback below applies
+            // unreadable jar: skipped
         }
-
-        if (found.isEmpty()) {
-            found.add("javafx.controls");
-            found.add("javafx.fxml");
-        }
-
-        return found;
     }
 
     /**
