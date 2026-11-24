@@ -36,13 +36,16 @@ public class MainController {
     @FXML private TextField appVersionField;
     @FXML private TextField vendorField;
     @FXML private TextField jarPathField;
+    @FXML private TextField libsDirField;
     @FXML private TextField mainClassField;
     @FXML private TextField iconPathField;
     @FXML private TextField outputDirField;
 
     @FXML private TextField jvmOptionsField;
+    @FXML private CheckBox winConsoleCheckBox;
 
     @FXML private TextField jmodsPathField;
+    @FXML private TextField extraJdkModulesField;
 
     @FXML private Label moduleDetectionLabel;
     @FXML private FlowPane modulesFlowPane;
@@ -57,6 +60,8 @@ public class MainController {
     private final JavaFxModuleDetector javaFxModuleDetector = new JavaFxModuleDetector();
     private final ToolsLocatorService toolsLocatorService = new ToolsLocatorService();
     private final ValidationService validationService = new ValidationService();
+    private final InputStagingService inputStagingService = new InputStagingService();
+    private final JdepsService jdepsService = new JdepsService();
     private final JlinkService jlinkService = new JlinkService();
     private final JpackageService jpackageService = new JpackageService();
 
@@ -135,7 +140,20 @@ public class MainController {
     }
 
     /**
-     * Scans the selected jar for JavaFX usage and ticks the matching module checkboxes.
+     * Opens a folder chooser and puts the selected dependencies folder in its field.
+     */
+    @FXML
+    private void onBrowseLibsDir() {
+        DirectoryChooser dirChooser = new DirectoryChooser();
+        dirChooser.setTitle("Select dependencies folder");
+        File file = dirChooser.showDialog(buildButton.getScene().getWindow());
+        if (file != null) {
+            libsDirField.setText(file.getAbsolutePath());
+        }
+    }
+
+    /**
+     * Scans the selected jar and its dependency jars for JavaFX usage and ticks the matching module checkboxes.
      * Shows an error message in the label if no valid jar is selected.
      */
     @FXML
@@ -145,7 +163,7 @@ public class MainController {
             moduleDetectionLabel.setText("Select a valid jar first.");
             return;
         }
-        Set<String> suggested = javaFxModuleDetector.suggestModules(jarPath);
+        Set<String> suggested = javaFxModuleDetector.suggestModules(jarPath, libsDirField.getText());
         moduleCheckBoxes.forEach((module, cb) -> cb.setSelected(suggested.contains(module)));
         moduleDetectionLabel.setText("found : " + String.join(", ", suggested));
     }
@@ -210,7 +228,8 @@ public class MainController {
         buildProgressBar.setVisible(true);
         buildProgressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
 
-        BuildTask task = new BuildTask(config, toolchainInfo, jlinkService, jpackageService, this::appendLog);
+        BuildTask task = new BuildTask(config, toolchainInfo, inputStagingService, jdepsService,
+                                jlinkService, jpackageService, this::appendLog);
 
         task.setOnSucceeded(e -> {
             BuildResult result = task.getValue();
@@ -246,6 +265,18 @@ public class MainController {
         config.setIconPath(iconPathField.getText());
         config.setOutputDir(outputDirField.getText());
         config.setJavafxJmodsPath(jmodsPathField.getText());
+
+        config.setLibsDir(libsDirField.getText());
+        config.setWinConsole(winConsoleCheckBox.isSelected());
+
+        List<String> extraModules = new ArrayList<>();
+        String rawModules = extraJdkModulesField.getText();
+        if (rawModules != null && !rawModules.isBlank()) {
+            for (String module : rawModules.split("[,\\s]+")) {
+                if (!module.isBlank()) extraModules.add(module.trim());
+            }
+        }
+        config.setExtraJdkModules(extraModules);
 
         List<String> jvmOptions = new ArrayList<>();
         String rawOptions = jvmOptionsField.getText();

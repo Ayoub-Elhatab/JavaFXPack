@@ -35,4 +35,13 @@ public class ProjectConfig {
     private List<String> jvmOptions = new ArrayList<>();
     private List<String> javafxModules = new ArrayList<>();
     private String javafxJmodsPath;
+
+    // folder with the dependency jars, copied next to the main jar (optional)
+    private String libsDir;
+
+    // JDK modules jdeps can't detect, e.g. jdk.localedata or jdk.crypto.ec
+    private List<String> extraJdkModules = new ArrayList<>();
+
+    //so startup errors are visible
+    private boolean winConsole;
 }

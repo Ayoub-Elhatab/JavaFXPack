@@ -7,7 +7,7 @@ import java.util.Optional;
 
 /**
  * Locates the external tools a build depends on:
- * a JDK (jpackage, jlink) and the WiX Toolset.
+ * a JDK (jpackage, jlink, jdeps) and the WiX Toolset.
  *
  * @author Ayoub Elhatab
  * LinkedIn: <a href="https://www.linkedin.com/in/ayoub-elhatab/">Ayoub Elhatab</a>
@@ -54,6 +54,12 @@ public class ToolsLocatorService {
             }
         }
 
+        String jdepsPath = null;
+        if (jdkFound) {
+            File jdepsExe = new File(javaHome, "bin\\jdeps.exe");
+            if (jdepsExe.exists()) jdepsPath = jdepsExe.getAbsolutePath();
+        }
+
         Optional<File> wixBin = findWixBin();
         boolean wixFound = wixBin.isPresent();
         String wixBinPath = wixBin.map(File::getAbsolutePath).orElse(null);
@@ -63,6 +69,7 @@ public class ToolsLocatorService {
                 .javaHome(javaHome)
                 .jpackagePath(jpackagePath)
                 .jlinkPath(jlinkPath)
+                .jdepsPath(jdepsPath)
                 .jdkFound(jdkFound)
                 .jdkVersion(jdkVersion)
                 .wixFound(wixFound)
