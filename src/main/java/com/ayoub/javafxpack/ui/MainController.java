@@ -36,13 +36,16 @@ public class MainController {
     @FXML private TextField appVersionField;
     @FXML private TextField vendorField;
     @FXML private TextField jarPathField;
+    @FXML private TextField libsDirField;
     @FXML private TextField mainClassField;
     @FXML private TextField iconPathField;
     @FXML private TextField outputDirField;
 
     @FXML private TextField jvmOptionsField;
+    @FXML private CheckBox winConsoleCheckBox;
 
     @FXML private TextField jmodsPathField;
+    @FXML private TextField extraJdkModulesField;
 
     @FXML private Label moduleDetectionLabel;
     @FXML private FlowPane modulesFlowPane;
@@ -133,6 +136,19 @@ public class MainController {
         File file = fileChooser.showOpenDialog(buildButton.getScene().getWindow());
         if (file != null) {
             jarPathField.setText(file.getAbsolutePath());
+        }
+    }
+
+    /**
+     * Opens a folder chooser and puts the selected dependencies folder in its field.
+     */
+    @FXML
+    private void onBrowseLibsDir() {
+        DirectoryChooser dirChooser = new DirectoryChooser();
+        dirChooser.setTitle("Select dependencies folder");
+        File file = dirChooser.showDialog(buildButton.getScene().getWindow());
+        if (file != null) {
+            libsDirField.setText(file.getAbsolutePath());
         }
     }
 
@@ -249,6 +265,18 @@ public class MainController {
         config.setIconPath(iconPathField.getText());
         config.setOutputDir(outputDirField.getText());
         config.setJavafxJmodsPath(jmodsPathField.getText());
+
+        config.setLibsDir(libsDirField.getText());
+        config.setWinConsole(winConsoleCheckBox.isSelected());
+
+        List<String> extraModules = new ArrayList<>();
+        String rawModules = extraJdkModulesField.getText();
+        if (rawModules != null && !rawModules.isBlank()) {
+            for (String module : rawModules.split("[,\\s]+")) {
+                if (!module.isBlank()) extraModules.add(module.trim());
+            }
+        }
+        config.setExtraJdkModules(extraModules);
 
         List<String> jvmOptions = new ArrayList<>();
         String rawOptions = jvmOptionsField.getText();
