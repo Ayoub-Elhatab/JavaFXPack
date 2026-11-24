@@ -54,16 +54,16 @@
                         <TextField fx:id="libsDirField" promptText="Optional, e.g. target\libs (JavaFX jars are skipped)" GridPane.rowIndex="4" GridPane.columnIndex="1" />
                         <Button text="Browse..." onAction="#onBrowseLibsDir" GridPane.rowIndex="4" GridPane.columnIndex="2" />
 
-                        <Label text="Main class" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="input-label" />
-                        <TextField fx:id="mainClassField" promptText="com.ayoub.myapp.Main" GridPane.rowIndex="4" GridPane.columnIndex="1" GridPane.columnSpan="1" />
+                        <Label text="Main class" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="input-label" />
+                        <TextField fx:id="mainClassField" promptText="com.ayoub.myapp.Main" GridPane.rowIndex="5" GridPane.columnIndex="1" GridPane.columnSpan="1" />
 
-                        <Label text="Icon (.ico)" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="input-label" />
-                        <TextField fx:id="iconPathField" promptText="Optional" GridPane.rowIndex="5" GridPane.columnIndex="1" />
-                        <Button text="Browse..." onAction="#onBrowseIcon" GridPane.rowIndex="5" GridPane.columnIndex="2" />
+                        <Label text="Icon (.ico)" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="input-label" />
+                        <TextField fx:id="iconPathField" promptText="Optional" GridPane.rowIndex="6" GridPane.columnIndex="1" />
+                        <Button text="Browse..." onAction="#onBrowseIcon" GridPane.rowIndex="6" GridPane.columnIndex="2" />
 
-                        <Label text="Output folder" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="input-label" />
-                        <TextField fx:id="outputDirField" promptText="C:\path\to\output" GridPane.rowIndex="6" GridPane.columnIndex="1" />
-                        <Button text="Browse..." onAction="#onBrowseOutputDir" GridPane.rowIndex="6" GridPane.columnIndex="2" />
+                        <Label text="Output folder" GridPane.rowIndex="7" GridPane.columnIndex="0" styleClass="input-label" />
+                        <TextField fx:id="outputDirField" promptText="C:\path\to\output" GridPane.rowIndex="7" GridPane.columnIndex="1" />
+                        <Button text="Browse..." onAction="#onBrowseOutputDir" GridPane.rowIndex="7" GridPane.columnIndex="2" />
 
                         <rowConstraints>
                             <RowConstraints /><RowConstraints /><RowConstraints />
