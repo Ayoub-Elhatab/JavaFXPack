@@ -69,6 +69,15 @@ public class ValidationService {
         } else if (!new File(config.getJavafxJmodsPath()).isDirectory()) {
             result.addError("javafx-jmods path is not a valid directory: " + config.getJavafxJmodsPath());
         }
+        if (!isBlank(config.getLibsDir()) && !new File(config.getLibsDir()).isDirectory()) {
+            result.addError("Dependencies folder is not a valid directory: " + config.getLibsDir());
+        }
+
+        for (String module : config.getExtraJdkModules()) {
+            if (!module.matches("[A-Za-z_][\\w.]*")) {
+                result.addError("Invalid extra JDK module name: " + module);
+            }
+        }
         if (config.getJavafxModules().isEmpty()) {
             result.addError("Select at least one JavaFX module.");
         }
