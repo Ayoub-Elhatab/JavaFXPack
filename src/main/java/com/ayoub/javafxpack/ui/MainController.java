@@ -57,6 +57,8 @@ public class MainController {
     private final JavaFxModuleDetector javaFxModuleDetector = new JavaFxModuleDetector();
     private final ToolsLocatorService toolsLocatorService = new ToolsLocatorService();
     private final ValidationService validationService = new ValidationService();
+    private final InputStagingService inputStagingService = new InputStagingService();
+    private final JdepsService jdepsService = new JdepsService();
     private final JlinkService jlinkService = new JlinkService();
     private final JpackageService jpackageService = new JpackageService();
 
@@ -210,7 +212,8 @@ public class MainController {
         buildProgressBar.setVisible(true);
         buildProgressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
 
-        BuildTask task = new BuildTask(config, toolchainInfo, jlinkService, jpackageService, this::appendLog);
+        BuildTask task = new BuildTask(config, toolchainInfo, inputStagingService, jdepsService,
+                                jlinkService, jpackageService, this::appendLog);
 
         task.setOnSucceeded(e -> {
             BuildResult result = task.getValue();

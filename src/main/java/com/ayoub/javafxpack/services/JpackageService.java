@@ -28,9 +28,10 @@ public class JpackageService {
      * @param config the project settings
      * @param toolchain the detected tools (jpackage path)
      * @param runtimeImagePath path of the runtime image built by jlink
+     * @param inputDir the staged folder holding the main jar and its dependencies
      * @return the full command
      */
-    public List<String> buildCommand(ProjectConfig config, ToolchainInfo toolchain, String runtimeImagePath) {
+    public List<String> buildCommand(ProjectConfig config, ToolchainInfo toolchain, String runtimeImagePath, File inputDir) {
         List<String> cmd = new ArrayList<>();
 
         cmd.add(toolchain.getJpackagePath());
@@ -50,7 +51,7 @@ public class JpackageService {
 
         File jar = new File(config.getJarPath());
         cmd.add("--input");
-        cmd.add(jar.getParentFile().getAbsolutePath());
+        cmd.add(inputDir.getAbsolutePath());
 
         cmd.add("--main-jar");
         cmd.add(jar.getName());
@@ -72,6 +73,9 @@ public class JpackageService {
         cmd.add("--win-shortcut");
         cmd.add("--win-menu");
         cmd.add("--win-dir-chooser");
+        if (config.isWinConsole()) {
+            cmd.add("--win-console");
+        }
 
         if (!config.getJvmOptions().isEmpty()) {
             for (String opt : config.getJvmOptions()) {
@@ -89,11 +93,12 @@ public class JpackageService {
      * @param config the project settings
      * @param toolchain the detected tools (jpackage path)
      * @param runtimeImagePath path of the runtime image built by jlink
+     * @param inputDir the staged folder holding the main jar and its dependencies
      * @param onLine called for every line of command output, for the build log
      * @return the build result with success flag, exit code, exe path and full log
      */
-    public BuildResult run(ProjectConfig config, ToolchainInfo toolchain, String runtimeImagePath, Consumer<String> onLine) {
-        List<String> command = buildCommand(config, toolchain, runtimeImagePath);
+    public BuildResult run(ProjectConfig config, ToolchainInfo toolchain, String runtimeImagePath, File inputDir, Consumer<String> onLine) {
+        List<String> command = buildCommand(config, toolchain, runtimeImagePath, inputDir);
         StringBuilder rawLog = new StringBuilder();
 
         onLine.accept("Running: " + String.join(" ", command));
