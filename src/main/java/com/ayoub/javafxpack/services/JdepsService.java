@@ -3,8 +3,11 @@ package com.ayoub.javafxpack.services;
 
 import com.ayoub.javafxpack.models.ToolchainInfo;
 import com.ayoub.javafxpack.process.ProcessRunner;
+import com.ayoub.javafxpack.utils.JarUtils;
+
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,11 +35,12 @@ public class JdepsService {
      *
      * @param toolchain the detected tools (jdeps path)
      * @param inputDir the staged input folder holding the main jar and its dependencies
+     * @param libsDir the dependencies folder; its JavaFX jars are given to jdeps as a module path, or null/blank for none
      * @param onLine called with progress messages, for the build log
      * @return the JDK modules to add to the runtime image
      * @throws InterruptedException if the thread is interrupted while waiting for jdeps
      */
-    public List<String> detectJdkModules(ToolchainInfo toolchain, File inputDir, Consumer<String> onLine) throws InterruptedException {
+    public List<String> detectJdkModules(ToolchainInfo toolchain, File inputDir, String libsDir, Consumer<String> onLine) throws InterruptedException {
         if (toolchain.getJdepsPath() == null) {
             onLine.accept("jdeps not found: using the default JDK modules.");
             return FALLBACK_MODULES;
@@ -52,6 +56,22 @@ public class JdepsService {
                 "--print-module-deps",
                 "--ignore-missing-deps",
                 "--multi-release", "base"));
+
+        List<String> javafxJars = new ArrayList<>();
+        if (libsDir != null && !libsDir.isBlank()) {
+            try {
+                for (Path lib : JarUtils.listJars(Path.of(libsDir))) {
+                    if (JarUtils.isJavaFxJar(lib)) javafxJars.add(lib.toAbsolutePath().toString());
+                }
+            } catch (IOException e) {
+            // unreadable folder: jdeps runs without a module path
+            }
+        }
+        if (!javafxJars.isEmpty()) {
+            command.add("--module-path");
+            command.add(String.join(File.pathSeparator, javafxJars));
+        }
+
         for (File jar : jars) {
             command.add(jar.getAbsolutePath());
         }

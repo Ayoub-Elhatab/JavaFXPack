@@ -51,7 +51,7 @@ public class BuildTask extends Task<BuildResult> {
         File inputDir = inputStagingService.stage(config, log);
 
         log.accept("Detecting JDK modules with jdeps...");
-        List<String> jdkModules = jdepsService.detectJdkModules(toolchain, inputDir, log);
+        List<String> jdkModules = jdepsService.detectJdkModules(toolchain, inputDir, config.getLibsDir(), log);
 
         log.accept("Building custom runtime with jlink...");
         String runtimeImagePath = jlinkService.buildRuntime(config, toolchain, jdkModules, log);

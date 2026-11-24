@@ -57,7 +57,7 @@ public class JlinkService {
         command.add("--strip-debug");
         command.add("--no-header-files");
         command.add("--no-man-pages");
-        command.add("--compress=2");
+        command.add("--compress=zip-6");
 
         onLine.accept("Running: " + String.join(" ", command));
         int exitCode = processRunner.run(command, new File(config.getOutputDir()), onLine);
