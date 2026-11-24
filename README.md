@@ -137,6 +137,10 @@ The layers only depend downward: UI → services → process, with the models sh
 - The javafx-jmods version must match your app's JavaFX version; a different version can make the exe fail at startup.
 - The module detector reads class files as text, so it finds JavaFX packages used by your own classes and your dependencies. Modules only needed indirectly are pulled in by jlink automatically.
 
+## License
+
+The source code is released under the [MIT License](LICENSE).
+
 ## Author
 
 Ayoub Elhatab: [GitHub](https://github.com/Ayoub-Elhatab) · [LinkedIn](https://www.linkedin.com/in/ayoub-elhatab/)
